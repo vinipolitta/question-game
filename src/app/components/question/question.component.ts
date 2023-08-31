@@ -79,6 +79,9 @@ export class QuestionComponent implements OnInit {
 
 
   }
+  selectOption(option: string) {
+    this.answerForm.patchValue({ answer: option });
+  }
 
 
   showResults() {

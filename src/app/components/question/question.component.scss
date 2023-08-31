@@ -50,3 +50,46 @@
   color: #dc3545;
   font-weight: bold;
 }
+
+.option-label {
+  margin-bottom: 10px;
+}
+
+.option {
+  padding: 5px 10px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.selected {
+  background-color: #b8c6ef; /* Cor de fundo para opção selecionada */
+}
+
+.correct {
+  background-color: #6ddc6d; /* Cor de fundo para opção correta */
+}
+
+.incorrect {
+  background-color: #ff5a5a; /* Cor de fundo para opção incorreta */
+}
+
+.feedback {
+  padding: 10px;
+  border-radius: 5px;
+  font-weight: bold;
+  color: white;
+  margin-top: 10px;
+  text-align: center;
+}
+
+.text-success {
+  background-color: #6ddc6d; /* Cor de fundo para feedback de resposta correta */
+}
+
+.text-danger {
+  background-color: #ff5a5a; /* Cor de fundo para feedback de resposta incorreta */
+}
+
+.show-results-button {
+  margin-top: 10px;
+}

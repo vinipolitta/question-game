@@ -6,18 +6,31 @@
         <p class="card-text question-text">{{ question?.question }}</p>
         <form [formGroup]="answerForm" (ngSubmit)="submitAnswer()">
           <div class="options">
-            <label *ngFor="let option of question?.options" class="d-block">
-              <input
-                type="radio"
-                formControlName="answer"
-                [value]="option"
-                [disabled]="showFeedback"
-              />
-              {{ option }}
+            <label
+              *ngFor="let option of question?.options; let i = index"
+              class="d-block option-label"
+            >
+              <div
+                class="option"
+                [ngClass]="{
+                  selected:
+                    answerForm.get('answer')?.value === option && !showFeedback,
+                  correct:
+                    showFeedback &&
+                    quizService.checkAnswer(option, question.answer),
+                  incorrect:
+                    showFeedback &&
+                    answerForm.get('answer')?.value === option &&
+                    !quizService.checkAnswer(option, question.answer)
+                }"
+                (click)="selectOption(option)"
+              >
+                {{ option }}
+              </div>
             </label>
           </div>
           <button
-            *ngIf="!showFeedback"
+            *ngIf="!showFeedback && !showResultsButton"
             type="submit"
             class="btn btn-primary mt-3"
             [disabled]="answerForm.invalid"
@@ -26,7 +39,9 @@
           </button>
           <button
             *ngIf="
-              showFeedback && quizService.hasNextQuestion(currentQuestionIndex)
+              showFeedback &&
+              !showResultsButton &&
+              quizService.hasNextQuestion(currentQuestionIndex)
             "
             class="btn btn-secondary mt-3"
             (click)="nextQuestion()"
@@ -43,9 +58,6 @@
             Mostrar Resultados
           </button>
         </form>
-        <div *ngIf="showFeedback" class="mt-3">
-          <div [ngClass]="feedbackClass">{{ feedbackMessage }}</div>
-        </div>
       </div>
     </div>
   </div>
