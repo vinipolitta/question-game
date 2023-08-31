@@ -21,7 +21,8 @@
                   incorrect:
                     showFeedback &&
                     answerForm.get('answer')?.value === option &&
-                    !quizService.checkAnswer(option, question.answer)
+                    !quizService.checkAnswer(option, question.answer),
+                  disabled: showFeedback
                 }"
                 (click)="selectOption(option)"
               >
@@ -33,10 +34,11 @@
             *ngIf="!showFeedback && !showResultsButton"
             type="submit"
             class="btn btn-primary mt-3"
-            [disabled]="answerForm.invalid"
+            [disabled]="isOptionSelected()"
           >
             Responder
           </button>
+
           <button
             *ngIf="
               showFeedback &&
@@ -50,7 +52,9 @@
           </button>
           <button
             *ngIf="
-              showFeedback && !quizService.hasNextQuestion(currentQuestionIndex)
+              showResultsButton ||
+              (showFeedback &&
+                !quizService.hasNextQuestion(currentQuestionIndex))
             "
             class="btn btn-secondary mt-3"
             (click)="showResults()"

@@ -62,7 +62,7 @@
 }
 
 .selected {
-  background-color: #b8c6ef; /* Cor de fundo para opção selecionada */
+  background-color: #abc3e3; /* Cor de fundo para opção selecionada */
 }
 
 .correct {
@@ -71,6 +71,11 @@
 
 .incorrect {
   background-color: #ff5a5a; /* Cor de fundo para opção incorreta */
+}
+
+.disabled {
+  cursor: not-allowed;
+  opacity: 0.6;
 }
 
 .feedback {

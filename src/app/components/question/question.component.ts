@@ -17,6 +17,7 @@ export class QuestionComponent implements OnInit {
   feedbackMessage: string = '';
   feedbackClass: string = '';
   showResultsButton!: boolean;
+  teste = false
 
   constructor(
     private router: Router,
@@ -86,5 +87,11 @@ export class QuestionComponent implements OnInit {
 
   showResults() {
     this.router.navigate(['/result']);
+  }
+
+  isOptionSelected() {
+    this.teste = true
+
+    return this.answerForm.get('answer')?.value === null;
   }
 }
