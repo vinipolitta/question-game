@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
 import { QuizService } from 'src/app/services/quiz.service';
+import { StateService } from 'src/app/services/state.service';
 
 @Component({
   selector: 'app-question',
@@ -10,25 +12,46 @@ import { QuizService } from 'src/app/services/quiz.service';
 export class QuestionComponent implements OnInit {
   question: any;
   currentQuestionIndex: number = 0;
+  answerForm: FormGroup;
 
-  constructor(private quizService: QuizService, private router: Router) { }
+  constructor(
+    private router: Router,
+    private quizService: QuizService,
+    private stateService: StateService,
+    private formBuilder: FormBuilder
+  ) {
+    this.answerForm = this.formBuilder.group({
+      answer: ''
+    });
+  }
 
   ngOnInit(): void {
-    this.loadQuestion();
-  }
-
-  loadQuestion() {
-    this.question = this.quizService.getQuestion();
-  }
-
-  selectAnswer(selectedOption: string) {
-    this.quizService.checkAnswer(selectedOption);
-    if (this.quizService.hasNextQuestion()) {
-      this.currentQuestionIndex++;
+    // Assina o Observable para atualizações no índice da pergunta atual
+    this.stateService.currentQuestionIndex$.subscribe(index => {
+      this.currentQuestionIndex = index;
       this.loadQuestion();
+    });
+  }
+
+  // Carrega a pergunta atual
+  loadQuestion() {
+    this.question = this.quizService.getQuestion(this.currentQuestionIndex);
+    this.answerForm.patchValue({ answer: '' });
+  }
+
+  // Submete a resposta e atualiza a pontuação e o índice da pergunta
+  submitAnswer() {
+    const selectedAnswer = this.answerForm.get('answer')?.value;
+    const correctAnswer = this.question.answer;
+
+    if (this.quizService.checkAnswer(selectedAnswer, correctAnswer)) {
+      this.stateService.increaseScore();
+    }
+
+    if (this.quizService.hasNextQuestion(this.currentQuestionIndex)) {
+      this.stateService.setCurrentQuestionIndex(this.currentQuestionIndex + 1);
     } else {
-      // Navegue para a tela de resultados
-      Exemplo: this.router.navigate(['/result']);
+      this.router.navigate(['/result']);
     }
   }
 }

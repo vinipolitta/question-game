@@ -1,12 +1,13 @@
 <div class="question-container">
   <h2>Pergunta {{ currentQuestionIndex + 1 }}</h2>
-  <p>{{ question.question }}</p>
-  <div class="options">
-    <button
-      *ngFor="let option of question.options"
-      (click)="selectAnswer(option)"
-    >
-      {{ option }}
-    </button>
-  </div>
+  <p class="question-text">{{ question?.question }}</p>
+  <form [formGroup]="answerForm" (ngSubmit)="submitAnswer()">
+    <div class="options">
+      <label *ngFor="let option of question?.options">
+        <input type="radio" formControlName="answer" [value]="option" />
+        {{ option }}
+      </label>
+    </div>
+    <button type="submit" [disabled]="answerForm.invalid">Responder</button>
+  </form>
 </div>

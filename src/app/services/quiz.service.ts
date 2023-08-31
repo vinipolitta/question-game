@@ -6,6 +6,8 @@ import { Injectable } from '@angular/core';
   providedIn: 'root'
 })
 export class QuizService {
+
+  //criaçao das perguntas
   private questions = [
     {
       question: 'Qual é a capital da França?',
@@ -17,32 +19,29 @@ export class QuizService {
       options: ['Vini', 'Vinicius', 'Londres', 'Roma'],
       answer: 'Vinicius'
     },
-    // Mais perguntas...
+    {
+      question: 'Qual é o Sobre nome?',
+      options: ['Vini', 'Vinicius', 'Politta', 'Roma'],
+      answer: 'Politta'
+    },
   ];
 
-  private currentQuestionIndex = 0;
-  private score = 0;
-
-  getQuestion() {
-    return this.questions[this.currentQuestionIndex];
+  // Obtém uma pergunta com base no índice fornecido
+  getQuestion(index: number) {
+    return this.questions[index];
   }
 
-  checkAnswer(selectedAnswer: string) {
-    const correctAnswer = this.questions[this.currentQuestionIndex].answer;
-    if (selectedAnswer === correctAnswer) {
-      this.score++;
-    }
-    this.currentQuestionIndex++;
+  // Verifica se a resposta selecionada é correta
+  checkAnswer(selectedAnswer: string, correctAnswer: string): boolean {
+    return selectedAnswer === correctAnswer;
   }
 
-  getScore() {
-    return this.score;
+  // Verifica se há mais perguntas a serem respondidas
+  hasNextQuestion(currentIndex: number): boolean {
+    return currentIndex < this.questions.length - 1;
   }
 
-  hasNextQuestion() {
-    return this.currentQuestionIndex < this.questions.length;
-  }
-
+  // Obtém o número total de perguntas no quiz
   getTotalQuestions() {
     return this.questions.length;
   }
