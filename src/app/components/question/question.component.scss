@@ -1,94 +1,52 @@
-.question-container {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding: 20px;
-
-  h2 {
-    font-size: 24px;
-    margin-bottom: 10px;
-  }
-
-  p {
-    font-size: 18px;
-    margin-bottom: 20px;
-    text-align: center;
-  }
-
-  .options {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-
-    button {
-      margin-bottom: 10px;
-      padding: 10px 20px;
-      font-size: 16px;
-      border: none;
-      border-radius: 4px;
-      background-color: #007bff;
-      color: #fff;
-      cursor: pointer;
-      transition: background-color 0.2s ease-in-out;
-
-      &:hover {
-        background-color: #0056b3;
-      }
-    }
-  }
-}
-.question-container {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
+.background {
+  background-image: url("../../../assets/images/quiz-question.jpg"); /* Substitua pelo caminho da sua imagem */
+  background-size: cover;
+  background-position: center;
   height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  font-size: 24px;
+  color: #fff;
+}
 
-  h2 {
-    font-size: 24px;
-    margin-bottom: 10px;
-  }
+.custom-card {
+  background-color: #f8f9fa;
+  border: none;
+  border-radius: 10px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+  text-align: center;
+}
 
-  p {
-    font-size: 18px;
-    text-align: center;
-    margin-bottom: 20px;
-  }
+.question-text {
+  font-size: 18px;
+  margin-bottom: 15px;
+}
 
-  form {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-  }
+.options label {
+  display: block;
+  margin-bottom: 10px;
+}
 
-  .options {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    margin-top: 10px;
+.btn-primary {
+  background-color: #007bff;
+  border-color: #007bff;
+}
 
-    label {
-      font-size: 16px;
-      margin-bottom: 5px;
+.btn-secondary {
+  background-color: #6c757d;
+  border-color: #6c757d;
+}
 
-      input {
-        margin-right: 5px;
-      }
-    }
-  }
+.text-success {
+  color: #28a745;
+  font-weight: bold;
+}
 
-  button {
-    padding: 10px 20px;
-    font-size: 18px;
-    border: none;
-    border-radius: 4px;
-    background-color: #007bff;
-    color: #fff;
-    cursor: pointer;
-    transition: background-color 0.2s ease-in-out;
-
-    &:hover {
-      background-color: #0056b3;
-    }
-  }
+.text-danger {
+  color: #dc3545;
+  font-weight: bold;
 }

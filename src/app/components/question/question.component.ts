@@ -13,10 +13,14 @@ export class QuestionComponent implements OnInit {
   question: any;
   currentQuestionIndex: number = 0;
   answerForm: FormGroup;
+  showFeedback: boolean = false;
+  feedbackMessage: string = '';
+  feedbackClass: string = '';
+  showResultsButton!: boolean;
 
   constructor(
     private router: Router,
-    private quizService: QuizService,
+    public quizService: QuizService,
     private stateService: StateService,
     private formBuilder: FormBuilder
   ) {
@@ -31,9 +35,9 @@ export class QuestionComponent implements OnInit {
       this.currentQuestionIndex = index;
       this.loadQuestion();
     });
+    this.loadQuestion();
 
     console.log(this.stateService.getPlayerName$().subscribe(jogador => console.log('AQUI', jogador)));
-
   }
 
   // Carrega a pergunta atual
@@ -44,17 +48,40 @@ export class QuestionComponent implements OnInit {
 
   // Submete a resposta e atualiza a pontuação e o índice da pergunta
   submitAnswer() {
+    if (this.showFeedback) {
+      return; // Evita respostas múltiplas
+    }
+
     const selectedAnswer = this.answerForm.get('answer')?.value;
     const correctAnswer = this.question.answer;
 
     if (this.quizService.checkAnswer(selectedAnswer, correctAnswer)) {
+      this.showFeedback = true;
+      this.feedbackMessage = 'Resposta Correta!';
+      this.feedbackClass = 'text-success';
       this.stateService.increaseScore();
+    } else {
+      this.showFeedback = true;
+      this.feedbackMessage = 'Resposta Incorreta!';
+      this.feedbackClass = 'text-danger';
     }
 
-    if (this.quizService.hasNextQuestion(this.currentQuestionIndex)) {
-      this.stateService.setCurrentQuestionIndex(this.currentQuestionIndex + 1);
-    } else {
-      this.router.navigate(['/result']);
-    }
+    this.answerForm.disable(); // Desabilita os botões de rádio após responder
+
+
+  }
+
+  nextQuestion() {
+    this.showFeedback = false;
+    this.answerForm.enable(); // Habilita os botões de rádio
+    this.currentQuestionIndex++;
+    this.loadQuestion();
+
+
+  }
+
+
+  showResults() {
+    this.router.navigate(['/result']);
   }
 }

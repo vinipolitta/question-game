@@ -1,13 +1,52 @@
-<div class="question-container">
-  <h2>Pergunta {{ currentQuestionIndex + 1 }}</h2>
-  <p class="question-text">{{ question?.question }}</p>
-  <form [formGroup]="answerForm" (ngSubmit)="submitAnswer()">
-    <div class="options">
-      <label *ngFor="let option of question?.options">
-        <input type="radio" formControlName="answer" [value]="option" />
-        {{ option }}
-      </label>
+<div class="background">
+  <div class="container">
+    <div class="card custom-card mt-4">
+      <div class="card-body">
+        <h2 class="card-title">Pergunta {{ currentQuestionIndex + 1 }}</h2>
+        <p class="card-text question-text">{{ question?.question }}</p>
+        <form [formGroup]="answerForm" (ngSubmit)="submitAnswer()">
+          <div class="options">
+            <label *ngFor="let option of question?.options" class="d-block">
+              <input
+                type="radio"
+                formControlName="answer"
+                [value]="option"
+                [disabled]="showFeedback"
+              />
+              {{ option }}
+            </label>
+          </div>
+          <button
+            *ngIf="!showFeedback"
+            type="submit"
+            class="btn btn-primary mt-3"
+            [disabled]="answerForm.invalid"
+          >
+            Responder
+          </button>
+          <button
+            *ngIf="
+              showFeedback && quizService.hasNextQuestion(currentQuestionIndex)
+            "
+            class="btn btn-secondary mt-3"
+            (click)="nextQuestion()"
+          >
+            Próxima Pergunta
+          </button>
+          <button
+            *ngIf="
+              showFeedback && !quizService.hasNextQuestion(currentQuestionIndex)
+            "
+            class="btn btn-secondary mt-3"
+            (click)="showResults()"
+          >
+            Mostrar Resultados
+          </button>
+        </form>
+        <div *ngIf="showFeedback" class="mt-3">
+          <div [ngClass]="feedbackClass">{{ feedbackMessage }}</div>
+        </div>
+      </div>
     </div>
-    <button type="submit" [disabled]="answerForm.invalid">Responder</button>
-  </form>
+  </div>
 </div>
