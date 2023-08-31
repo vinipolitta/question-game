@@ -1,0 +1,12 @@
+<div class="question-container">
+  <h2>Pergunta {{ currentQuestionIndex + 1 }}</h2>
+  <p>{{ question.question }}</p>
+  <div class="options">
+    <button
+      *ngFor="let option of question.options"
+      (click)="selectAnswer(option)"
+    >
+      {{ option }}
+    </button>
+  </div>
+</div>
