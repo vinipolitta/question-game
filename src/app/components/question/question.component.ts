@@ -31,6 +31,9 @@ export class QuestionComponent implements OnInit {
       this.currentQuestionIndex = index;
       this.loadQuestion();
     });
+
+    console.log(this.stateService.getPlayerName$().subscribe(jogador => console.log('AQUI', jogador)));
+
   }
 
   // Carrega a pergunta atual

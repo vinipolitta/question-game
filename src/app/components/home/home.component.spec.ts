@@ -37,7 +37,7 @@ describe('HomeComponent', () => {
     const router = TestBed.inject(Router);
     const spy = spyOn(router, 'navigate');
 
-    component.startQuiz();
+    component.startGame();
 
     expect(spy).toHaveBeenCalledWith(['/question']);
   });

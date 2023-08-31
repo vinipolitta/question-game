@@ -1,5 +1,30 @@
 <div class="home-container">
-  <h1>{{ title }}</h1>
-  <p>{{ subTitle }}</p>
-  <button class="start-button" (click)="startQuiz()">Começar o Jogo</button>
+  <h1 class="title">{{ title }}</h1>
+  <p class="subtitle">{{ subTitle }}</p>
+  <button
+    *ngIf="!active"
+    class="btn btn-primary glow-on-hover"
+    (click)="insertName(true)"
+  >
+    Começar o Jogo
+  </button>
+
+  <form *ngIf="active" [formGroup]="playerNameForm" (ngSubmit)="startGame()">
+    <div class="form-group">
+      <input
+        type="text"
+        class="form-control"
+        formControlName="playerName"
+        placeholder="Enter your name"
+      />
+    </div>
+
+    <button
+      type="submit"
+      [disabled]="playerNameForm.invalid"
+      class="btn btn-primary glow-on-hover start-game"
+    >
+      Start Game
+    </button>
+  </form>
 </div>

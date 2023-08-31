@@ -7,6 +7,7 @@ import { BehaviorSubject, Observable } from 'rxjs';
 export class StateService {
   private _currentQuestionIndex = new BehaviorSubject<number>(0);
   private _score = new BehaviorSubject<number>(0);
+  private _playerName = new BehaviorSubject<string>(''); // Adicione o BehaviorSubject para o nome do jogador
 
   // Observable para o índice da pergunta atual
   get currentQuestionIndex$(): Observable<number> {
@@ -21,6 +22,16 @@ export class StateService {
   // Define o índice da pergunta atual
   setCurrentQuestionIndex(index: number) {
     this._currentQuestionIndex.next(index);
+  }
+
+  // Define o nome do jogador
+  setPlayerName(playerName: string) {
+    this._playerName.next(playerName);
+  }
+
+  // Obtém o nome do jogador como um Observable
+  getPlayerName$(): Observable<string> {
+    return this._playerName.asObservable();
   }
 
   // Incrementa a pontuação
