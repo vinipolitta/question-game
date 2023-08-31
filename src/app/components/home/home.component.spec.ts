@@ -24,6 +24,15 @@ describe('HomeComponent', () => {
     fixture.detectChanges();
   });
 
+  it('should have a title', () => {
+    expect(component.title).toBe('Bem-vindo ao Quiz');
+  });
+
+  it('should render title in a h1 tag', () => {
+    expect(component.subTitle).toBe('Teste seus conhecimentos e divirta-se!');
+  });
+
+
   it('should navigate to /question when startQuiz() is called', () => {
     const router = TestBed.inject(Router);
     const spy = spyOn(router, 'navigate');
@@ -32,4 +41,5 @@ describe('HomeComponent', () => {
 
     expect(spy).toHaveBeenCalledWith(['/question']);
   });
+
 });

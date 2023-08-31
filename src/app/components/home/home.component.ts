@@ -7,6 +7,8 @@ import { Router } from '@angular/router';
   styleUrls: ['./home.component.scss']
 })
 export class HomeComponent {
+  public title: string = 'Bem-vindo ao Quiz';
+  public subTitle: string = 'Teste seus conhecimentos e divirta-se!';
 
   constructor(private router: Router) { }
 
