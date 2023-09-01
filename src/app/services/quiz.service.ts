@@ -16,6 +16,8 @@ export class QuizService {
   constructor(private http: HttpClient, private stateService: StateService) { }
   //criaçao das perguntas
   questions: any[] = [];
+  private currentQuestionIndex: number = 0;
+  private answeredQuestions: number = 0;
 
 
   private categoryAPI = environment.urlCategoryAPI;
@@ -24,6 +26,14 @@ export class QuizService {
 
   getQuestionsFromAPI(payload: payloadQuestions): Observable<any> {
     return this.http.get(`${this.teste}amount=${payload.quant}&category=${payload.category}&difficulty=${payload.dificult}&type=multiple`);
+  }
+
+  getCurrentQuestionIndex(): number {
+    return this.currentQuestionIndex;
+  }
+
+  getAnsweredQuestions(): number {
+    return this.answeredQuestions;
   }
 
 

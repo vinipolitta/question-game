@@ -6,6 +6,44 @@
   align-items: center;
 }
 
+/* Estilizar o cartão de resultados */
+.result-container {
+  background-color: rgba(255, 255, 255, 0.8);
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  color: #333;
+  font-size: 1.5rem;
+  max-width: 80%;
+  position: relative;
+}
+
+.card-title {
+  font-size: 2rem;
+  margin-bottom: 20px;
+}
+
+.card-text {
+  font-size: 1.5rem;
+}
+
+/* Estilizar o botão */
+.btn-primary {
+  background-color: #ff6f61;
+  color: #fff;
+  font-size: 1.5rem;
+  border: none;
+  padding: 10px 20px;
+  margin-top: 20px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.btn-primary:hover {
+  background-color: #ff4d4d;
+}
+
 /* Adicionar uma animação de fundo */
 .background-animation {
   position: fixed;
@@ -29,44 +67,6 @@
   100% {
     background-position: 0% 50%;
   }
-}
-
-/* Estilizar o cartão de resultados */
-.card {
-  background-color: rgba(255, 255, 255, 0.457);
-  padding: 20px;
-  border-radius: 10px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-}
-
-.card-title {
-  color: #333;
-  font-size: 2rem;
-  text-align: center;
-  margin-bottom: 20px;
-}
-
-.card-text {
-  color: #e8e8e8;
-  font-size: 1.5rem;
-  text-align: center;
-}
-
-/* Estilizar o botão */
-.btn-primary {
-  background-color: #ff6f61;
-  color: #fff;
-  font-size: 1.5rem;
-  border: none;
-  padding: 10px 20px;
-  margin-top: 20px;
-  display: block;
-  margin-left: auto;
-  margin-right: auto;
-}
-
-.btn-primary:hover {
-  background-color: #ff4d4d;
 }
 
 /* Adicionar uma animação de fogos de artifício */

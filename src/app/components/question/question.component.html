@@ -16,6 +16,7 @@
 
     <div class="card custom-card mt-4">
       <div class="card-body">
+        <h1>Welcome {{ namePlayer }}</h1>
         <h2 class="card-title">Pergunta {{ currentQuestionIndex + 1 }}</h2>
         <p class="card-text question-text">{{ question?.question }}</p>
         <form [formGroup]="answerForm" (ngSubmit)="submitAnswer()">
@@ -83,7 +84,7 @@
             Mostrar Resultados
           </button>
           <button
-            *ngIf="showTimeoutModal"
+            *ngIf="showTimeoutModal && this.timerValue <= 0"
             type="button"
             class="btn btn-primary"
             (click)="openModal(modalContent)"

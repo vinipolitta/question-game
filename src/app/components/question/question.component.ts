@@ -7,6 +7,11 @@ import { QuizService } from 'src/app/services/quiz.service';
 import { StateService } from 'src/app/services/state.service';
 import { TimerService } from 'src/app/services/timer.service';
 import { Category } from 'src/app/shared/interface/categories-response';
+import { Howl, Howler } from 'howler';
+
+const countdownSound = new Howl({
+  src: ['../../../assets/sounds/countdown.wav'], // Substitua pelo caminho correto para o seu arquivo de áudio
+});
 
 @Component({
   selector: 'app-question',
@@ -29,6 +34,10 @@ export class QuestionComponent implements OnInit {
   routerSubscription: Subscription;
   timeLimitReached: boolean = false;
   showTimeoutModal = false; // Variável para controlar a exibição do modal
+  totalQuestions: number = 0; // Inicialmente, define o número total de perguntas como 0
+  namePlayer!: string;
+
+
 
   constructor(
     private router: Router,
@@ -44,16 +53,25 @@ export class QuestionComponent implements OnInit {
 
     this.timerService.startTimer();
     this.timerSubscription = this.timerService.getTimerValue().subscribe((value) => {
-      if (value < 0) {
+      if (this.timerValue <= 10 && !countdownSound.playing()) {
+        countdownSound.play(); // Inicia a reprodução da contagem regressiva
+      } else {
+        countdownSound.stop();
+      }
+      if (value <= 0) {
         // Quando o tempo se torna negativo, pausar o contador em "00:00"
         this.timerService.pauseTimer();
         this.timerValue = 0;
-
         // Exibir o botão para mostrar o modal de aviso
         this.showTimeoutModal = true;
       } else {
         this.timerValue = value;
       }
+
+      if (this.timerValue <= 0 && !this.showResultsButton && !this.showTimeoutModal) {
+        this.showTimeoutModal = true;
+      }
+
 
     });
 
@@ -72,7 +90,7 @@ export class QuestionComponent implements OnInit {
     });
     this.loadQuestion();
 
-    // console.log(this.stateService.getPlayerName$().subscribe(jogador => console.log('AQUI', jogador)));
+    console.log(this.stateService.getPlayerName$().subscribe(player => this.namePlayer = player));
   }
   openModal(content: any) {
     const modalRef = this.modalService.open(content, { centered: true });
@@ -86,8 +104,10 @@ export class QuestionComponent implements OnInit {
   }
 
   ngOnDestroy(): void {
+    countdownSound.stop();
     if (this.timerSubscription) {
       this.timerSubscription.unsubscribe();
+
     }
   }
 
