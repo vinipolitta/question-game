@@ -8,13 +8,15 @@ import { QuestionComponent } from './components/question/question.component';
 import { ResultComponent } from './components/result/result.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
+import { QuizComponent } from './components/quiz/quiz.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     HomeComponent,
     QuestionComponent,
-    ResultComponent
+    ResultComponent,
+    QuizComponent
   ],
   imports: [
     BrowserModule,

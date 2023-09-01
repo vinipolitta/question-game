@@ -46,8 +46,14 @@ export class QuestionComponent implements OnInit {
 
   // Carrega a pergunta atual
   loadQuestion() {
-    this.question = this.quizService.getQuestion(this.currentQuestionIndex);
-    this.answerForm.patchValue({ answer: '' });
+    this.stateService.getQuestions$().subscribe(res => {
+      if (res && res.length > 0) {
+        this.question = res[0];
+        console.log(res);
+        this.question = this.quizService.getQuestion(this.currentQuestionIndex);
+        this.answerForm.patchValue({ answer: '' });
+      }
+    })
   }
 
   // Submete a resposta e atualiza a pontuação e o índice da pergunta
@@ -71,7 +77,6 @@ export class QuestionComponent implements OnInit {
     }
 
     this.answerForm.disable(); // Desabilita os botões de rádio após responder
-
 
   }
 

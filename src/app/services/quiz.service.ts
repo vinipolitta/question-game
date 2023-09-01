@@ -4,7 +4,8 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
-import { Category } from '../shared/interface/categories-response';
+import { Category, payloadQuestions } from '../shared/interface/categories-response';
+import { StateService } from 'src/app/services/state.service';
 
 @Injectable({
   providedIn: 'root'
@@ -12,30 +13,33 @@ import { Category } from '../shared/interface/categories-response';
 export class QuizService {
   categories: Category[] = [];
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient, private stateService: StateService) { }
   //criaçao das perguntas
-  private questions = [
-    {
-      question: 'Qual é a capital da França?',
-      options: ['Madrid', 'Paris', 'Londres', 'Roma'],
-      answer: 'Paris'
-    },
-    {
-      question: 'Qual é o meu nome?',
-      options: ['Vini', 'Vinicius', 'Londres', 'Roma'],
-      answer: 'Vinicius'
-    },
-    {
-      question: 'Qual é o Sobre nome?',
-      options: ['Vini', 'Vinicius', 'Politta', 'Roma'],
-      answer: 'Politta'
-    },
-  ];
+  questions: any[] = [];
+
 
   private categoryAPI = environment.urlCategoryAPI;
+  private questionFromTypes = environment.urlSendQuestionsFromCategory;
+  private teste = environment.teste
 
+  getQuestionsFromAPI(payload: payloadQuestions): Observable<any> {
+    return this.http.get(`${this.teste}amount=${payload.quant}&category=${payload.category}&difficulty=${payload.dificult}&type=multiple`);
+  }
+
+
+  getQuestionsFromCategory(categoryId: number): Observable<any> {
+    return this.http.get<any>(`${this.questionFromTypes}${categoryId}`)
+  }
+
+  //Obtem uma lista de categoria para ser chamada as questoes
   getCategory(): Observable<any> {
     return this.http.get<any>(this.categoryAPI);
+  }
+
+  setQuestionsFromAPI(results: any[]) {
+    if (results) {
+      this.questions = results
+    }
   }
 
   // Obtém uma pergunta com base no índice fornecido

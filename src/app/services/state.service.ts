@@ -8,6 +8,7 @@ export class StateService {
   private _currentQuestionIndex = new BehaviorSubject<number>(0);
   private _score = new BehaviorSubject<number>(0);
   private _playerName = new BehaviorSubject<string>(''); // Adicione o BehaviorSubject para o nome do jogador
+  private _questions = new BehaviorSubject<any[]>([]); // Adicione um BehaviorSubject para as questões do quiz
 
   // Observable para o índice da pergunta atual
   get currentQuestionIndex$(): Observable<number> {
@@ -43,5 +44,14 @@ export class StateService {
   resetState() {
     this._currentQuestionIndex.next(0);
     this._score.next(0);
+  }
+
+  setQuestions(questions: any[]) {
+    this._questions.next(questions);
+  }
+
+  // Obtém as questões do quiz como um Observable
+  getQuestions$(): Observable<any[]> {
+    return this._questions.asObservable();
   }
 }
