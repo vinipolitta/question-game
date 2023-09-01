@@ -1,10 +1,19 @@
 <div class="background">
   <div class="container">
-    <div>
-      <p>{{ timerValue | timerFormat }}</p>
-      <button (click)="pauseTimer()">Pausar Timer</button>
-      <button (click)="startTimer()">Start Timer</button>
+    <div class="timer-container">
+      <p class="timer">{{ timerValue | timerFormat }}</p>
+      <div class="buttons">
+        <button (click)="pauseTimer()">
+          <i class="fas fa-pause"></i>
+          <!-- Ícone de Pause -->
+        </button>
+        <button (click)="startTimer()">
+          <i class="fas fa-play"></i>
+          <!-- Ícone de Play -->
+        </button>
+      </div>
     </div>
+
     <div class="card custom-card mt-4">
       <div class="card-body">
         <h2 class="card-title">Pergunta {{ currentQuestionIndex + 1 }}</h2>

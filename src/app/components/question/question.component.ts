@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
-import { Router } from '@angular/router';
+import { NavigationEnd, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { QuizService } from 'src/app/services/quiz.service';
 import { StateService } from 'src/app/services/state.service';
@@ -25,6 +25,7 @@ export class QuestionComponent implements OnInit {
   timeElapsed: number = 0;
   timerValue = 0;
   timerSubscription: Subscription | undefined;
+  routerSubscription: Subscription;
 
   constructor(
     private router: Router,
@@ -40,6 +41,12 @@ export class QuestionComponent implements OnInit {
     this.timerService.startTimer();
     this.timerSubscription = this.timerService.getTimerValue().subscribe((value) => {
       this.timerValue = value;
+    });
+
+    this.routerSubscription = this.router.events.subscribe((event) => {
+      if (event instanceof NavigationEnd && event.url !== '/questions') {
+        this.timerService.resetTimer();
+      }
     });
   }
 

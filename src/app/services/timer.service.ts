@@ -30,6 +30,11 @@ export class TimerService {
     this.stopTimer$.next();
   }
 
+  resetTimer(): void {
+    this.timerValue = 0;
+    this.timerSubject.next(this.timerValue);
+  }
+
   getTimerValue(): Observable<number> {
     return this.timerSubject.asObservable();
   }
