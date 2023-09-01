@@ -52,28 +52,7 @@ export class QuestionComponent implements OnInit {
     });
 
     this.timerService.startTimer();
-    this.timerSubscription = this.timerService.getTimerValue().subscribe((value) => {
-      if (this.timerValue <= 10 && !countdownSound.playing()) {
-        countdownSound.play(); // Inicia a reprodução da contagem regressiva
-      } else {
-        countdownSound.stop();
-      }
-      if (value <= 0) {
-        // Quando o tempo se torna negativo, pausar o contador em "00:00"
-        this.timerService.pauseTimer();
-        this.timerValue = 0;
-        // Exibir o botão para mostrar o modal de aviso
-        this.showTimeoutModal = true;
-      } else {
-        this.timerValue = value;
-      }
-
-      if (this.timerValue <= 0 && !this.showResultsButton && !this.showTimeoutModal) {
-        this.showTimeoutModal = true;
-      }
-
-
-    });
+    this.timerSync();
 
     this.routerSubscription = this.router.events.subscribe((event) => {
       if (event instanceof NavigationEnd && event.url !== '/questions') {
@@ -81,6 +60,8 @@ export class QuestionComponent implements OnInit {
       }
     });
   }
+
+
 
   ngOnInit(): void {
     // Assina o Observable para atualizações no índice da pergunta atual
@@ -90,8 +71,41 @@ export class QuestionComponent implements OnInit {
     });
     this.loadQuestion();
 
-    console.log(this.stateService.getPlayerName$().subscribe(player => this.namePlayer = player));
+    this.stateService.getPlayerName$().subscribe(player => this.namePlayer = player);
   }
+
+  timerSync() {
+    this.timerSubscription = this.timerService.getTimerValue().subscribe((value) => {
+      this.handleCountdownSound(value);
+      this.handleTimerValue(value);
+      this.handleTimeoutModal(value);
+    });
+  }
+
+  private handleCountdownSound(value: number) {
+    if (this.timerValue <= 10 && !countdownSound.playing()) {
+      countdownSound.play(); // Inicia a reprodução da contagem regressiva
+    } else {
+      countdownSound.stop();
+    }
+  }
+
+  private handleTimerValue(value: number) {
+    if (value <= 0) {
+      // Quando o tempo se torna negativo, pausar o contador em "00:00"
+      this.timerService.pauseTimer();
+      this.timerValue = 0;
+    } else {
+      this.timerValue = value;
+    }
+  }
+
+  private handleTimeoutModal(value: number) {
+    if (this.timerValue <= 0 && !this.showResultsButton && !this.showTimeoutModal) {
+      this.showTimeoutModal = true;
+    }
+  }
+
   openModal(content: any) {
     const modalRef = this.modalService.open(content, { centered: true });
 
@@ -124,7 +138,6 @@ export class QuestionComponent implements OnInit {
     this.stateService.getQuestions$().subscribe(res => {
       if (res && res.length > 0) {
         this.question = res[0];
-        console.log(res);
         this.question = this.quizService.getQuestion(this.currentQuestionIndex);
         this.answerForm.patchValue({ answer: '' });
       }
@@ -141,19 +154,30 @@ export class QuestionComponent implements OnInit {
     const correctAnswer = this.question.answer;
 
     if (this.quizService.checkAnswer(selectedAnswer, correctAnswer)) {
-      // Resposta correta: adicionar 20 segundos
-      this.timerService.addTime(20);
-      this.showFeedback = true;
-      this.feedbackMessage = 'Resposta Correta!';
-      this.feedbackClass = 'text-success';
-      this.stateService.increaseScore();
+      this.handleCorrectAnswer();
     } else {
-      // Resposta incorreta: subtrair 20 segundos
-      this.timerService.addTime(-20);
-      this.showFeedback = true;
-      this.feedbackMessage = 'Resposta Incorreta!';
-      this.feedbackClass = 'text-danger';
+      this.handleIncorrectAnswer();
     }
+
+    this.disableAnswerForm();
+  }
+
+  private handleCorrectAnswer() {
+    this.timerService.addTime(20); // Resposta correta: adicionar 20 segundos
+    this.showFeedback = true;
+    this.feedbackMessage = 'Resposta Correta!';
+    this.feedbackClass = 'text-success';
+    this.stateService.increaseScore();
+  }
+
+  private handleIncorrectAnswer() {
+    this.timerService.addTime(-20); // Resposta incorreta: subtrair 20 segundos
+    this.showFeedback = true;
+    this.feedbackMessage = 'Resposta Incorreta!';
+    this.feedbackClass = 'text-danger';
+  }
+
+  private disableAnswerForm() {
     this.answerForm.disable(); // Desabilitar os botões de resposta após responder
   }
 
@@ -161,20 +185,22 @@ export class QuestionComponent implements OnInit {
     this.showFeedback = false;
     this.answerForm.enable(); // Habilita os botões de rádio
     this.currentQuestionIndex++;
+
     if (this.timerValue <= 0) {
-      // Bloquear botões e redirecionar para os resultados
-      this.answerForm.disable();
-      this.showResults();
+      this.handleTimeout();
     } else {
       this.loadQuestion();
     }
+  }
 
+  private handleTimeout() {
+    this.disableAnswerForm();
+    this.showResults();
   }
 
   selectOption(option: string) {
     this.answerForm.patchValue({ answer: option });
   }
-
 
   showResults() {
     this.openModal(false);
@@ -185,5 +211,4 @@ export class QuestionComponent implements OnInit {
   isOptionSelected() {
     return this.answerForm.get('answer')?.value === null;
   }
-
 }

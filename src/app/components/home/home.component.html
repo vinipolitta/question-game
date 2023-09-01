@@ -1,38 +1,51 @@
 <div class="home-container">
-  <h1 class="title">{{ title }}</h1>
+  <h1 class="title" id="pageTitle">{{ title }}</h1>
   <p class="subtitle">{{ subTitle }}</p>
   <button
     *ngIf="!active"
     class="btn btn-primary glow-on-hover"
     (click)="insertName(true)"
+    aria-labelledby="pageTitle"
   >
     Começar o Jogo
   </button>
 
   <form *ngIf="active" [formGroup]="playerNameForm" (ngSubmit)="startGame()">
     <div class="form-group">
+      <label for="playerName" class="form-label">Seu Nome</label>
       <input
         type="text"
+        id="playerName"
         class="form-control"
         formControlName="playerName"
-        placeholder="Enter your name"
+        placeholder="Informe seu nome"
+        aria-labelledby="playerNameLabel"
+        required
       />
     </div>
     <div class="form-group">
       <label for="quantQuestions" class="form-label"
-        >Quantidade Questions</label
+        >Quantidade de Perguntas</label
       >
       <input
         id="quantQuestions"
         type="number"
         class="form-control"
         formControlName="quantQuestions"
-        placeholder="Enter quantidade de perguntas"
+        placeholder="Informe a quantidade de perguntas"
+        aria-labelledby="quantQuestionsLabel"
+        required
       />
     </div>
     <div class="form-group">
-      <label for="inputState" class="form-label">Type Questions</label>
-      <select id="inputState" class="form-select" formControlName="category">
+      <label for="inputState" class="form-label">Categoria de Perguntas</label>
+      <select
+        id="inputState"
+        class="form-select"
+        formControlName="category"
+        aria-labelledby="categoryLabel"
+        required
+      >
         <option value="1" selected>Select Category</option>
         <option *ngFor="let category of categoryObj" [ngValue]="category.id">
           {{ category.name }}
@@ -41,8 +54,14 @@
     </div>
 
     <div class="form-group">
-      <label for="inputState" class="form-label">Dificult Questions</label>
-      <select id="inputState" class="form-select" formControlName="dificult">
+      <label for="dificult" class="form-label">Dificuldade das Perguntas</label>
+      <select
+        id="dificult"
+        class="form-select"
+        formControlName="dificult"
+        aria-labelledby="dificultLabel"
+        required
+      >
         <option value="1" selected>Select Dificult</option>
         <option *ngFor="let dificult of dificultObj">
           {{ dificult }}
@@ -54,8 +73,9 @@
       type="submit"
       [disabled]="playerNameForm.invalid"
       class="btn btn-primary glow-on-hover start-game"
+      aria-labelledby="startGameLabel"
     >
-      Start Game
+      Iniciar Jogo
     </button>
   </form>
 </div>

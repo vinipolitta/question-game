@@ -28,17 +28,15 @@ export class HomeComponent {
     private quizService: QuizService,
   ) {
     this.playerNameForm = this.formBuilder.group({
-      playerName: ['vini', Validators.required],
-      quantQuestions: [5],
-      category: [20],
-      dificult: ['easy']
+      playerName: ['', Validators.required],
+      quantQuestions: ['', Validators.required],
+      category: [1, Validators.required],
+      dificult: ['', Validators.required]
     });
   }
 
   ngOnInit(): void {
     this.getCategory();
-
-
   }
 
   getQuestionsForParameters() {

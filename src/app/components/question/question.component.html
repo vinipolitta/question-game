@@ -84,7 +84,7 @@
             Mostrar Resultados
           </button>
           <button
-            *ngIf="showTimeoutModal && this.timerValue <= 0"
+            *ngIf="showTimeoutModal"
             type="button"
             class="btn btn-primary"
             (click)="openModal(modalContent)"
