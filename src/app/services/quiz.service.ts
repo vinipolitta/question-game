@@ -1,12 +1,18 @@
 // quiz.service.ts
 
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { Observable } from 'rxjs';
+import { environment } from 'src/environments/environment';
+import { Category } from '../shared/interface/categories-response';
 
 @Injectable({
   providedIn: 'root'
 })
 export class QuizService {
+  categories: Category[] = [];
 
+  constructor(private http: HttpClient) { }
   //criaçao das perguntas
   private questions = [
     {
@@ -25,6 +31,12 @@ export class QuizService {
       answer: 'Politta'
     },
   ];
+
+  private categoryAPI = environment.urlCategoryAPI;
+
+  getCategory(): Observable<any> {
+    return this.http.get<any>(this.categoryAPI);
+  }
 
   // Obtém uma pergunta com base no índice fornecido
   getQuestion(index: number) {

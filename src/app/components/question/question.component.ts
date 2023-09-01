@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
 import { QuizService } from 'src/app/services/quiz.service';
 import { StateService } from 'src/app/services/state.service';
+import { Category } from 'src/app/shared/interface/categories-response';
 
 @Component({
   selector: 'app-question',
@@ -18,6 +19,7 @@ export class QuestionComponent implements OnInit {
   feedbackClass: string = '';
   showResultsButton!: boolean;
   teste = false
+  categoryType!: Category;
 
   constructor(
     private router: Router,
@@ -38,8 +40,9 @@ export class QuestionComponent implements OnInit {
     });
     this.loadQuestion();
 
-    console.log(this.stateService.getPlayerName$().subscribe(jogador => console.log('AQUI', jogador)));
+    // console.log(this.stateService.getPlayerName$().subscribe(jogador => console.log('AQUI', jogador)));
   }
+
 
   // Carrega a pergunta atual
   loadQuestion() {
