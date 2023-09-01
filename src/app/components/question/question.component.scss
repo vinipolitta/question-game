@@ -1,5 +1,6 @@
+/* Estilos para elementos gerais */
 .background {
-  background-image: url("../../../assets/images/quiz-question.jpg"); /* Substitua pelo caminho da sua imagem */
+  background-image: url("../../../assets/images/quiz-question.jpg");
   background-size: cover;
   background-position: center;
   height: 100vh;
@@ -32,13 +33,15 @@
 }
 
 .btn-primary {
-  background-color: #007bff;
-  border-color: #007bff;
+  background-color: #ff6f61;
+  border-color: #ff4d4d;
+  color: #fff;
 }
 
 .btn-secondary {
   background-color: #6c757d;
   border-color: #6c757d;
+  color: #fff;
 }
 
 .text-success {
@@ -62,15 +65,15 @@
 }
 
 .selected {
-  background-color: #abc3e3; /* Cor de fundo para opção selecionada */
+  background-color: #abc3e3;
 }
 
 .correct {
-  background-color: #6ddc6d; /* Cor de fundo para opção correta */
+  background-color: #6ddc6d;
 }
 
 .incorrect {
-  background-color: #ff5a5a; /* Cor de fundo para opção incorreta */
+  background-color: #ff5a5a;
 }
 
 .disabled {
@@ -87,19 +90,11 @@
   text-align: center;
 }
 
-.text-success {
-  background-color: #6ddc6d; /* Cor de fundo para feedback de resposta correta */
-}
-
-.text-danger {
-  background-color: #ff5a5a; /* Cor de fundo para feedback de resposta incorreta */
-}
-
 .show-results-button {
   margin-top: 10px;
 }
 
-/* timer.component.css */
+/* Estilos para o timer.component.css */
 .timer {
   text-align: center;
   margin: 20px;
@@ -139,7 +134,7 @@
 }
 
 button {
-  background-color: #007bff;
+  background-color: #ff6f61;
   color: #fff;
   border: none;
   padding: 10px 20px;
@@ -148,6 +143,101 @@ button {
   transition: background-color 0.3s ease;
 
   &:hover {
-    background-color: #0056b3;
+    background-color: #ff4d4d;
+  }
+}
+
+/* Estilos personalizados para o modal */
+.custom-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: rgba(0, 0, 0, 0.5); /* Fundo escuro semi-transparente */
+  z-index: 1; /* Coloca o modal acima de outros elementos */
+}
+
+.modal-content {
+  background-color: #fff;
+  border-radius: 10px;
+  max-width: 400px;
+  padding: 20px;
+  text-align: center;
+  position: relative;
+  animation-name: slide-in; /* Nome da animação */
+  animation-duration: 0.5s; /* Duração da animação */
+}
+
+.close {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  font-size: 24px;
+  cursor: pointer;
+}
+
+.modal-title {
+  font-size: 24px;
+  font-weight: bold;
+}
+
+.animation-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 20px 0;
+}
+
+.circle {
+  width: 30px;
+  height: 30px;
+  background-color: #ff6f61;
+  border-radius: 50%;
+  margin: 0 10px;
+  animation: bounce 1s infinite alternate;
+}
+
+.animated-text {
+  font-size: 18px;
+  margin-bottom: 20px;
+}
+
+.btn-primary {
+  background-color: #ff4d4d;
+  border: none;
+  color: #fff;
+  padding: 10px 20px;
+  font-size: 16px;
+  font-weight: bold;
+  border-radius: 10px;
+  cursor: pointer;
+
+  &:hover {
+    background-color: #ff6f61;
+  }
+}
+
+/* Animação de entrada (slide-in) */
+@keyframes slide-in {
+  from {
+    top: -100%; /* Inicia fora da tela */
+  }
+  to {
+    top: 0; /* Termina centralizado verticalmente */
+  }
+}
+
+/* Animação dos círculos */
+@keyframes bounce {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
   }
 }

@@ -98,13 +98,18 @@
 
 <!-- Conteúdo do Modal -->
 <ng-template #modalContent>
-  <div class="modal-header">
-    <h5 class="modal-title">GAME OVER</h5>
-  </div>
-  <div class="modal-body">
-    <p>Atingiu o tempo limite</p>
-    <button type="button" class="btn btn-primary" (click)="showResults()">
-      Mostrar Resultados
-    </button>
+  <div class="custom-modal">
+    <div class="modal-content">
+      <h5 class="modal-title">GAME OVER</h5>
+      <div class="animation-container">
+        <div class="circle"></div>
+        <div class="circle"></div>
+        <div class="circle"></div>
+      </div>
+      <p class="animated-text">Você atingiu o tempo limite.</p>
+      <button type="button" class="btn btn-primary" (click)="showResults()">
+        Mostrar Resultados
+      </button>
+    </div>
   </div>
 </ng-template>

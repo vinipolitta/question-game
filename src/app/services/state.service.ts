@@ -48,6 +48,7 @@ export class StateService {
     this._score.next(0);
   }
 
+  // Obtém as questões do quiz
   setQuestions(questions: any[]) {
     this._questions.next(questions);
   }
