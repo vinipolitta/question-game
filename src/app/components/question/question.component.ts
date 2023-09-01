@@ -57,7 +57,6 @@ export class QuestionComponent implements OnInit {
   }
 
   pauseTimer(): void {
-    console.log(this.timerValue);
     this.timerService.pauseTimer();
   }
 
@@ -108,19 +107,20 @@ export class QuestionComponent implements OnInit {
       this.feedbackMessage = 'Resposta Incorreta!';
       this.feedbackClass = 'text-danger';
     }
-
+    this.timerService.resetTimer();
     this.answerForm.disable(); // Desabilita os botões de rádio após responder
 
   }
 
   nextQuestion() {
+    this.timerService.resetTimer();
     this.showFeedback = false;
     this.answerForm.enable(); // Habilita os botões de rádio
     this.currentQuestionIndex++;
     this.loadQuestion();
 
-
   }
+
   selectOption(option: string) {
     this.answerForm.patchValue({ answer: option });
   }
@@ -132,8 +132,6 @@ export class QuestionComponent implements OnInit {
   }
 
   isOptionSelected() {
-    this.teste = true
-
     return this.answerForm.get('answer')?.value === null;
   }
 }

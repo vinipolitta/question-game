@@ -1,13 +1,13 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable, Subject, timer } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
+import { filter, takeUntil } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root',
 })
 export class TimerService {
   private timerInterval = 1000; // Intervalo em milissegundos (1 segundo)
-  private timerValue = 0; // Valor do timer em segundos
+  private timerValue = 60; // Inicia em 60 segundos (1 minuto)
 
   private timerSubject: BehaviorSubject<number> = new BehaviorSubject<number>(
     this.timerValue
@@ -19,9 +19,12 @@ export class TimerService {
 
   startTimer(): void {
     timer(0, this.timerInterval)
-      .pipe(takeUntil(this.stopTimer$))
+      .pipe(
+        takeUntil(this.stopTimer$),
+        takeUntil(this.timerSubject.pipe(filter(value => value === 0))) // Pare quando chegar a 0
+      )
       .subscribe(() => {
-        this.timerValue++;
+        this.timerValue--;
         this.timerSubject.next(this.timerValue);
       });
   }
@@ -31,7 +34,7 @@ export class TimerService {
   }
 
   resetTimer(): void {
-    this.timerValue = 0;
+    this.timerValue = 60; // Reinicia para 1 minuto (60 segundos)
     this.timerSubject.next(this.timerValue);
   }
 
