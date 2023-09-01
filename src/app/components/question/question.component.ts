@@ -1,8 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
+import { Subscription } from 'rxjs';
 import { QuizService } from 'src/app/services/quiz.service';
 import { StateService } from 'src/app/services/state.service';
+import { TimerService } from 'src/app/services/timer.service';
 import { Category } from 'src/app/shared/interface/categories-response';
 
 @Component({
@@ -20,16 +22,42 @@ export class QuestionComponent implements OnInit {
   showResultsButton!: boolean;
   teste = false
   categoryType!: Category;
+  timeElapsed: number = 0;
+  timerValue = 0;
+  timerSubscription: Subscription | undefined;
 
   constructor(
     private router: Router,
     public quizService: QuizService,
     private stateService: StateService,
-    private formBuilder: FormBuilder
+    private formBuilder: FormBuilder,
+    private timerService: TimerService
   ) {
     this.answerForm = this.formBuilder.group({
       answer: ''
     });
+
+    this.timerService.startTimer();
+    this.timerSubscription = this.timerService.getTimerValue().subscribe((value) => {
+      this.timerValue = value;
+    });
+  }
+
+  ngOnDestroy(): void {
+    if (this.timerSubscription) {
+      this.timerSubscription.unsubscribe();
+    }
+  }
+
+  pauseTimer(): void {
+    console.log(this.timerValue);
+    this.stateService.setTimerValue(this.timerValue)
+
+    this.timerService.pauseTimer();
+  }
+
+  startTimer() {
+    this.timerService.startTimer();
   }
 
   ngOnInit(): void {

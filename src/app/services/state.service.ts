@@ -9,6 +9,8 @@ export class StateService {
   private _score = new BehaviorSubject<number>(0);
   private _playerName = new BehaviorSubject<string>(''); // Adicione o BehaviorSubject para o nome do jogador
   private _questions = new BehaviorSubject<any[]>([]); // Adicione um BehaviorSubject para as questões do quiz
+  private _timerValue = new BehaviorSubject<number>(0); // Adicione um BehaviorSubject para o valor do timer
+
 
   // Observable para o índice da pergunta atual
   get currentQuestionIndex$(): Observable<number> {
@@ -53,5 +55,15 @@ export class StateService {
   // Obtém as questões do quiz como um Observable
   getQuestions$(): Observable<any[]> {
     return this._questions.asObservable();
+  }
+
+  // Define o valor do timer
+  setTimerValue(value: number) {
+    this._timerValue.next(value);
+  }
+
+  // Obtém o valor do timer como um Observable
+  getTimerValue$(): Observable<number> {
+    return this._timerValue.asObservable();
   }
 }

@@ -1,5 +1,10 @@
 <div class="background">
   <div class="container">
+    <div>
+      <p>{{ timerValue }}</p>
+      <button (click)="pauseTimer()">Pausar Timer</button>
+      <button (click)="startTimer()">Start Timer</button>
+    </div>
     <div class="card custom-card mt-4">
       <div class="card-body">
         <h2 class="card-title">Pergunta {{ currentQuestionIndex + 1 }}</h2>

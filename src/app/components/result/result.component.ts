@@ -32,6 +32,10 @@ export class ResultComponent implements OnInit {
     // Obtém a observável da pontuação do StateService
     this.score$ = this.stateService.score$;
     this.totalQuestions = this.quizService.getTotalQuestions();
+    this.stateService.getTimerValue$().subscribe(time => {
+      console.log('vindo do question o time', time);
+
+    })
   }
 
   // Reinicia o jogo
