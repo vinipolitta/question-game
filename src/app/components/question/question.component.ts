@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
-import { NavigationEnd, Router } from '@angular/router';
+import { NavigationEnd, NavigationStart, Router } from '@angular/router';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Subscription } from 'rxjs';
 import { QuizService } from 'src/app/services/quiz.service';
 import { StateService } from 'src/app/services/state.service';
@@ -26,13 +27,16 @@ export class QuestionComponent implements OnInit {
   timerValue = 0;
   timerSubscription: Subscription | undefined;
   routerSubscription: Subscription;
+  timeLimitReached: boolean = false;
+  showTimeoutModal = false; // Variável para controlar a exibição do modal
 
   constructor(
     private router: Router,
     public quizService: QuizService,
     private stateService: StateService,
     private formBuilder: FormBuilder,
-    private timerService: TimerService
+    private timerService: TimerService,
+    public modalService: NgbModal
   ) {
     this.answerForm = this.formBuilder.group({
       answer: ''
@@ -40,12 +44,43 @@ export class QuestionComponent implements OnInit {
 
     this.timerService.startTimer();
     this.timerSubscription = this.timerService.getTimerValue().subscribe((value) => {
-      this.timerValue = value;
+      if (value < 0) {
+        // Quando o tempo se torna negativo, pausar o contador em "00:00"
+        this.timerService.pauseTimer();
+        this.timerValue = 0;
+
+        // Exibir o botão para mostrar o modal de aviso
+        this.showTimeoutModal = true;
+      } else {
+        this.timerValue = value;
+      }
+
     });
 
     this.routerSubscription = this.router.events.subscribe((event) => {
       if (event instanceof NavigationEnd && event.url !== '/questions') {
         this.timerService.resetTimer();
+      }
+    });
+  }
+
+  ngOnInit(): void {
+    // Assina o Observable para atualizações no índice da pergunta atual
+    this.stateService.currentQuestionIndex$.subscribe(index => {
+      this.currentQuestionIndex = index;
+      this.loadQuestion();
+    });
+    this.loadQuestion();
+
+    // console.log(this.stateService.getPlayerName$().subscribe(jogador => console.log('AQUI', jogador)));
+  }
+  openModal(content: any) {
+    const modalRef = this.modalService.open(content, { centered: true });
+
+    // Adicione um evento de roteamento para fechar o modal quando navegar
+    this.router.events.subscribe((event) => {
+      if (modalRef && event instanceof NavigationStart) {
+        modalRef.close(); // Fecha o modal quando a navegação começa
       }
     });
   }
@@ -64,18 +99,6 @@ export class QuestionComponent implements OnInit {
     this.timerService.startTimer();
   }
 
-  ngOnInit(): void {
-    // Assina o Observable para atualizações no índice da pergunta atual
-    this.stateService.currentQuestionIndex$.subscribe(index => {
-      this.currentQuestionIndex = index;
-      this.loadQuestion();
-    });
-    this.loadQuestion();
-
-    // console.log(this.stateService.getPlayerName$().subscribe(jogador => console.log('AQUI', jogador)));
-  }
-
-
   // Carrega a pergunta atual
   loadQuestion() {
     this.stateService.getQuestions$().subscribe(res => {
@@ -91,33 +114,40 @@ export class QuestionComponent implements OnInit {
   // Submete a resposta e atualiza a pontuação e o índice da pergunta
   submitAnswer() {
     if (this.showFeedback) {
-      return; // Evita respostas múltiplas
+      return; // Evitar respostas múltiplas
     }
 
     const selectedAnswer = this.answerForm.get('answer')?.value;
     const correctAnswer = this.question.answer;
 
     if (this.quizService.checkAnswer(selectedAnswer, correctAnswer)) {
+      // Resposta correta: adicionar 20 segundos
+      this.timerService.addTime(20);
       this.showFeedback = true;
       this.feedbackMessage = 'Resposta Correta!';
       this.feedbackClass = 'text-success';
       this.stateService.increaseScore();
     } else {
+      // Resposta incorreta: subtrair 20 segundos
+      this.timerService.addTime(-20);
       this.showFeedback = true;
       this.feedbackMessage = 'Resposta Incorreta!';
       this.feedbackClass = 'text-danger';
     }
-    this.timerService.resetTimer();
-    this.answerForm.disable(); // Desabilita os botões de rádio após responder
-
+    this.answerForm.disable(); // Desabilitar os botões de resposta após responder
   }
 
   nextQuestion() {
-    this.timerService.resetTimer();
     this.showFeedback = false;
     this.answerForm.enable(); // Habilita os botões de rádio
     this.currentQuestionIndex++;
-    this.loadQuestion();
+    if (this.timerValue <= 0) {
+      // Bloquear botões e redirecionar para os resultados
+      this.answerForm.disable();
+      this.showResults();
+    } else {
+      this.loadQuestion();
+    }
 
   }
 
@@ -127,6 +157,7 @@ export class QuestionComponent implements OnInit {
 
 
   showResults() {
+    this.openModal(false);
     this.stateService.setTimerValue(this.timerValue);
     this.router.navigate(['/result']);
   }
@@ -134,4 +165,5 @@ export class QuestionComponent implements OnInit {
   isOptionSelected() {
     return this.answerForm.get('answer')?.value === null;
   }
+
 }

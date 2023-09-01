@@ -9,10 +9,10 @@ import { StateService } from 'src/app/services/state.service';
   selector: 'app-result',
   templateUrl: './result.component.html',
   styleUrls: ['./result.component.scss'],
-  animations: [ // Importante adicionar isso
+  animations: [
     trigger('fadeIn', [
       transition(':enter', [
-        // Usar a classe 'animate__animated' da Animate.css
+        // Usar a classe 'animate__animated'
         animate('500ms', style({ opacity: 1 })),
       ]),
     ]),
@@ -34,10 +34,8 @@ export class ResultComponent implements OnInit {
     this.score$ = this.stateService.score$;
     this.totalQuestions = this.quizService.getTotalQuestions();
     this.stateService.getTimerValue$().subscribe(time => {
-      console.log('vindo do question o time', time);
       this.timer = time;
-
-    })
+    });
   }
 
   // Reinicia o jogo

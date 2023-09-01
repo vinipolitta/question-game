@@ -44,6 +44,7 @@
               </div>
             </label>
           </div>
+          <!-- Botão "Responder" -->
           <button
             *ngIf="!showFeedback && !showResultsButton"
             type="submit"
@@ -53,30 +54,57 @@
             Responder
           </button>
 
+          <!-- Botão "Próxima Pergunta" -->
           <button
             *ngIf="
+              this.timerValue > 0 &&
               showFeedback &&
-              !showResultsButton &&
-              quizService.hasNextQuestion(currentQuestionIndex)
+              quizService.hasNextQuestion(currentQuestionIndex) &&
+              !showResultsButton
             "
             class="btn btn-secondary mt-3"
             (click)="nextQuestion()"
           >
             Próxima Pergunta
           </button>
+
+          <!-- Botão "Mostrar Resultados" -->
           <button
             *ngIf="
+              this.timerValue < 0 ||
               showResultsButton ||
               (showFeedback &&
                 !quizService.hasNextQuestion(currentQuestionIndex))
             "
             class="btn btn-secondary mt-3"
+            [disabled]="showResultsButton"
             (click)="showResults()"
           >
             Mostrar Resultados
+          </button>
+          <button
+            *ngIf="showTimeoutModal"
+            type="button"
+            class="btn btn-primary"
+            (click)="openModal(modalContent)"
+          >
+            Abrir Modal
           </button>
         </form>
       </div>
     </div>
   </div>
 </div>
+
+<!-- Conteúdo do Modal -->
+<ng-template #modalContent>
+  <div class="modal-header">
+    <h5 class="modal-title">GAME OVER</h5>
+  </div>
+  <div class="modal-body">
+    <p>Atingiu o tempo limite</p>
+    <button type="button" class="btn btn-primary" (click)="showResults()">
+      Mostrar Resultados
+    </button>
+  </div>
+</ng-template>

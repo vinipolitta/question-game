@@ -2,7 +2,7 @@
   <div class="result-container card">
     <h1 class="card-title">Resultados</h1>
     <div class="card-text">Pontuação: {{ score$ | async }}</div>
-    <div class="card-text">Tempo: {{ timer }}</div>
+    <div class="card-text">Tempo: {{ timer | timerFormat }}</div>
     <button class="btn btn-primary" (click)="restartGame()">
       Jogar Novamente
     </button>

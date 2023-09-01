@@ -1,3 +1,4 @@
+// timer.service.ts
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable, Subject, timer } from 'rxjs';
 import { filter, takeUntil } from 'rxjs/operators';
@@ -7,10 +8,11 @@ import { filter, takeUntil } from 'rxjs/operators';
 })
 export class TimerService {
   private timerInterval = 1000; // Intervalo em milissegundos (1 segundo)
-  private timerValue = 60; // Inicia em 60 segundos (1 minuto)
+  private baseTime = 60; // Tempo base para cada questionamento (60 segundos)
+  private accumulatedTime = this.baseTime; // Tempo acumulado para o próximo questionamento
 
   private timerSubject: BehaviorSubject<number> = new BehaviorSubject<number>(
-    this.timerValue
+    this.accumulatedTime
   );
 
   private stopTimer$ = new Subject<void>();
@@ -24,8 +26,8 @@ export class TimerService {
         takeUntil(this.timerSubject.pipe(filter(value => value === 0))) // Pare quando chegar a 0
       )
       .subscribe(() => {
-        this.timerValue--;
-        this.timerSubject.next(this.timerValue);
+        this.accumulatedTime--;
+        this.timerSubject.next(this.accumulatedTime);
       });
   }
 
@@ -34,11 +36,16 @@ export class TimerService {
   }
 
   resetTimer(): void {
-    this.timerValue = 60; // Reinicia para 1 minuto (60 segundos)
-    this.timerSubject.next(this.timerValue);
+    this.accumulatedTime = this.baseTime; // Reinicia para o tempo base
+    this.timerSubject.next(this.accumulatedTime);
   }
 
   getTimerValue(): Observable<number> {
     return this.timerSubject.asObservable();
+  }
+
+  addTime(seconds: number): void {
+    this.accumulatedTime += seconds;
+    this.timerSubject.next(this.accumulatedTime);
   }
 }
