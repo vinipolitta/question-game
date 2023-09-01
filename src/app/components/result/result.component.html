@@ -1,7 +1,11 @@
-<div class="result-container">
-  <h2>Resultado Final</h2>
-  <p>Você acertou {{ score$ | async }} de {{ totalQuestions }} perguntas!</p>
-  <button class="restart-button" (click)="restartGame()">
-    Jogar Novamente
-  </button>
+<div class="container">
+  <div class="result-container card">
+    <h1 class="card-title">Resultados</h1>
+    <div class="card-text">Pontuação: {{ score$ | async }}</div>
+    <button class="btn btn-primary" (click)="restartGame()">
+      Jogar Novamente
+    </button>
+  </div>
+  <div class="background-animation"></div>
+  <div class="firework"></div>
 </div>

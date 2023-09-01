@@ -1,3 +1,4 @@
+import { trigger, transition, animate, style } from '@angular/animations';
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
@@ -7,7 +8,15 @@ import { StateService } from 'src/app/services/state.service';
 @Component({
   selector: 'app-result',
   templateUrl: './result.component.html',
-  styleUrls: ['./result.component.scss']
+  styleUrls: ['./result.component.scss'],
+  animations: [ // Importante adicionar isso
+    trigger('fadeIn', [
+      transition(':enter', [
+        // Usar a classe 'animate__animated' da Animate.css
+        animate('500ms', style({ opacity: 1 })),
+      ]),
+    ]),
+  ],
 })
 export class ResultComponent implements OnInit {
   score$!: Observable<number>;

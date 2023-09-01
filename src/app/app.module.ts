@@ -8,7 +8,7 @@ import { QuestionComponent } from './components/question/question.component';
 import { ResultComponent } from './components/result/result.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
-import { QuizComponent } from './components/quiz/quiz.component';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations'; // Importe esta linha
 
 @NgModule({
   declarations: [
@@ -16,14 +16,14 @@ import { QuizComponent } from './components/quiz/quiz.component';
     HomeComponent,
     QuestionComponent,
     ResultComponent,
-    QuizComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     FormsModule,
     ReactiveFormsModule,
-    HttpClientModule
+    HttpClientModule,
+    BrowserAnimationsModule
   ],
   providers: [],
   bootstrap: [AppComponent]

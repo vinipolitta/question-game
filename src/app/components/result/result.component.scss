@@ -1,32 +1,102 @@
-.result-container {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
+/* Centralizar o conteúdo vertical e horizontalmente */
+.container {
   height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
 
-  h2 {
-    font-size: 24px;
-    margin-bottom: 10px;
+/* Adicionar uma animação de fundo */
+.background-animation {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -1;
+  background: linear-gradient(45deg, #0074cc, #0050a6, #00297a, #000c4e);
+  background-size: 400% 400%;
+  animation: gradientAnimation 10s ease infinite;
+}
+
+@keyframes gradientAnimation {
+  0% {
+    background-position: 0% 50%;
   }
-
-  p {
-    font-size: 18px;
-    margin-bottom: 20px;
+  50% {
+    background-position: 100% 50%;
   }
+  100% {
+    background-position: 0% 50%;
+  }
+}
 
-  .restart-button {
-    padding: 10px 20px;
-    font-size: 18px;
-    border: none;
-    border-radius: 4px;
-    background-color: #007bff;
-    color: #fff;
-    cursor: pointer;
-    transition: background-color 0.2s ease-in-out;
+/* Estilizar o cartão de resultados */
+.card {
+  background-color: rgba(255, 255, 255, 0.457);
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
 
-    &:hover {
-      background-color: #0056b3;
-    }
+.card-title {
+  color: #333;
+  font-size: 2rem;
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.card-text {
+  color: #e8e8e8;
+  font-size: 1.5rem;
+  text-align: center;
+}
+
+/* Estilizar o botão */
+.btn-primary {
+  background-color: #007bff;
+  color: #fff;
+  font-size: 1.5rem;
+  border: none;
+  padding: 10px 20px;
+  margin-top: 20px;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.btn-primary:hover {
+  background-color: #0056b3;
+}
+
+/* Adicionar uma animação de fogos de artifício */
+.firework {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: -1;
+  width: 200px;
+  height: 200px;
+  background: url("../../../assets/images/fogos-artificio.png"); /* Substitua pelo caminho da sua imagem */
+  background-size: contain;
+  animation: fireworkAnimation 10s ease infinite;
+}
+
+@keyframes fireworkAnimation {
+  0% {
+    transform: translate(-50%, -50%) rotate(0deg);
+  }
+  25% {
+    transform: translate(-50%, -50%) rotate(45deg);
+  }
+  50% {
+    transform: translate(-50%, -50%) rotate(90deg);
+  }
+  75% {
+    transform: translate(-50%, -50%) rotate(135deg);
+  }
+  100% {
+    transform: translate(-50%, -50%) rotate(180deg);
   }
 }
