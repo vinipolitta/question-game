@@ -9,6 +9,7 @@ import { ResultComponent } from './components/result/result.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations'; // Importe esta linha
+import { TimerFormatPipe } from './shared/pipes/timer-format.pipe';
 
 @NgModule({
   declarations: [
@@ -16,6 +17,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations'; 
     HomeComponent,
     QuestionComponent,
     ResultComponent,
+    TimerFormatPipe
   ],
   imports: [
     BrowserModule,

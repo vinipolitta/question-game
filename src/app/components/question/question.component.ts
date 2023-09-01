@@ -51,8 +51,6 @@ export class QuestionComponent implements OnInit {
 
   pauseTimer(): void {
     console.log(this.timerValue);
-    this.stateService.setTimerValue(this.timerValue)
-
     this.timerService.pauseTimer();
   }
 
@@ -122,6 +120,7 @@ export class QuestionComponent implements OnInit {
 
 
   showResults() {
+    this.stateService.setTimerValue(this.timerValue);
     this.router.navigate(['/result']);
   }
 

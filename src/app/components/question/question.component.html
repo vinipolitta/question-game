@@ -1,7 +1,7 @@
 <div class="background">
   <div class="container">
     <div>
-      <p>{{ timerValue }}</p>
+      <p>{{ timerValue | timerFormat }}</p>
       <button (click)="pauseTimer()">Pausar Timer</button>
       <button (click)="startTimer()">Start Timer</button>
     </div>

@@ -21,6 +21,7 @@ import { StateService } from 'src/app/services/state.service';
 export class ResultComponent implements OnInit {
   score$!: Observable<number>;
   totalQuestions!: number;
+  timer!: number;
 
   constructor(
     private router: Router,
@@ -34,6 +35,7 @@ export class ResultComponent implements OnInit {
     this.totalQuestions = this.quizService.getTotalQuestions();
     this.stateService.getTimerValue$().subscribe(time => {
       console.log('vindo do question o time', time);
+      this.timer = time;
 
     })
   }
